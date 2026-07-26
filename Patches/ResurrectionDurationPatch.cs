@@ -5,6 +5,7 @@ namespace Scp049ResurrectionScaler.Patches
     using Exiled.API.Features;
     using HarmonyLib;
     using PlayerRoles.PlayableScps.Scp049;
+    using Scp049ResurrectionScaler.Runtime;
 
     internal static class ResurrectionDurationPatch
     {
@@ -29,10 +30,10 @@ namespace Scp049ResurrectionScaler.Patches
         {
             Plugin plugin = Plugin.Instance;
 
-            if (plugin is null || __instance?.Owner is null || plugin.Config.LowHealthScp049 is null)
+            if (plugin is null || __instance?.Owner is null)
                 return;
 
-            if (!Player.TryGet(__instance.Owner, out Player player) || !plugin.Config.LowHealthScp049.Check(player))
+            if (!Player.TryGet(__instance.Owner, out Player player) || !Scp049Compatibility.IsScaledDoctor(player, plugin.Config))
                 return;
 
             float scaledDuration = plugin.Config.GetScaledDuration(player, __result);

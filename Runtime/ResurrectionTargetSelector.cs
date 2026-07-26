@@ -8,13 +8,12 @@ namespace Scp049ResurrectionScaler.Runtime
     using PlayerRoles.PlayableScps.Scp049;
     using PlayerRoles.Ragdolls;
     using PlayerRoles.Spectating;
-    using PlayerStatsSystem;
 
     internal static class ResurrectionTargetSelector
     {
         public static bool IsConfiguredDoctor(ReferenceHub hub)
         {
-            return Plugin.Instance?.Config.LowHealthScp049 is not null && Player.TryGet(hub, out Player player) && Plugin.Instance.Config.LowHealthScp049.Check(player);
+            return Plugin.Instance is not null && Player.TryGet(hub, out Player player) && Scp049Compatibility.IsScaledDoctor(player, Plugin.Instance.Config);
         }
 
         public static bool CanIgnoreZombieResurrectionLimit(Scp049ResurrectAbility ability)
@@ -52,7 +51,7 @@ namespace Scp049ResurrectionScaler.Runtime
 
         private static bool IsZombieCorpse(BasicRagdoll ragdoll)
         {
-            return ragdoll is not null && ragdoll.Info.RoleType == RoleTypeId.Scp0492 && ragdoll.Info.Handler is AttackerDamageHandler;
+            return Scp049Compatibility.IsZombieCorpse(ragdoll, Plugin.Instance?.Config);
         }
 
         private static bool TryGetReplacementSpectator(ReferenceHub originalTarget, ReferenceHub doctor, out ReferenceHub replacement)

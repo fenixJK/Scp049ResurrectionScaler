@@ -25,7 +25,7 @@ namespace Scp049ResurrectionScaler.Runtime
             if (ev.Player.Role.Type != RoleTypeId.Scp049)
                 return;
 
-            if (!IsNaturalSpawn(ev.Reason) || role.Check(ev.Player))
+            if (!IsNaturalSpawn(ev.Reason) || Scp049Compatibility.IsScaledDoctor(ev.Player, plugin.Config))
                 return;
 
             float chance = role.SpawnChance;
